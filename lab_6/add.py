@@ -1,4 +1,4 @@
-def standardization(lst):
+def normalization(lst):
     x_min=lst[0]
     for i in lst:
         if i<x_min:
@@ -14,4 +14,5 @@ def standardization(lst):
     return norm_vals
 
 lst=list(map(int,input("enter : ").split()))
-result=standardization(lst)
+result=normalization(lst)
+print(result)
