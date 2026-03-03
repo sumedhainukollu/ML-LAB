@@ -18,10 +18,6 @@ X_train = scaler.fit_transform(X_train)
 X_val = scaler.transform(X_val)
 X_test = scaler.transform(X_test)
 
-# --- 3. TEST THREE ALPHA VALUES ---
-# We check which one gives the best R2 score on the Validation set
-print("--- Checking Alpha Scores ---")
-
 
 lasso_01 = Lasso(alpha=0.1)
 lasso_01.fit(X_train, y_train)
