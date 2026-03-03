@@ -1,60 +1,63 @@
 import math
 from sklearn.datasets import fetch_california_housing
 
+# Load dataset
 data = fetch_california_housing()
+X = data.data   # All 8 features
 
+rows = len(X)
+cols = len(X[0])
 
-X = data.data[:, 0]
-lst = list(X)
+# Create empty matrix for standardized values
+standardized = [[0 for _ in range(cols)] for _ in range(rows)]
 
+for j in range(cols):   # For each feature (column)
 
-def standardization(lst):
+    # ---- Extract column ----
+    column = []
+    for i in range(rows):
+        column.append(X[i][j])
 
-    l = len(lst)
-
-    #mean
+    # ---- Compute Mean ----
     total = 0
-    for i in lst:
-        total += i
-    mean = total / l
+    for val in column:
+        total += val
+    mean = total / rows
 
-    # variance
+    # ---- Compute SD ----
     var_sum = 0
-    for i in lst:
-        var_sum += (i - mean) ** 2
+    for val in column:
+        var_sum += (val - mean) ** 2
 
-    variance = var_sum / l
+    variance = var_sum / rows
     sd = math.sqrt(variance)
 
-    #z-score transformation
-    std_vals = []
-    for i in lst:
-        z = (i - mean) / sd
-        std_vals.append(z)
-
-    return std_vals
+    #standardize column
+    for i in range(rows):
+        standardized[i][j] = (X[i][j] - mean) / sd
 
 
-#apply standardization
-
-standardized_values = standardization(lst)
-
-print("First 10 standardized values:")
-print(standardized_values[:10])
+#first 5 rows
+print("First 5 rows after standardization:")
+for i in range(5):
+    print(standardized[i])
 
 
-#verify Mean ≈ 0
+# verify
+print("\nVerification (Mean ≈ 0, SD ≈ 1 for each feature):")
 
-new_mean = sum(standardized_values) / len(standardized_values)
+for j in range(cols):
 
-#verify SD ≈ 1
+    column = []
+    for i in range(rows):
+        column.append(standardized[i][j])
 
-var_sum = 0
-for i in standardized_values:
-    var_sum += (i - new_mean) ** 2
+    mean = sum(column) / rows
 
-new_variance = var_sum / len(standardized_values)
-new_sd = math.sqrt(new_variance)
+    var_sum = 0
+    for val in column:
+        var_sum += (val - mean) ** 2
 
-print("\nMean after standardization:", new_mean)
-print("SD after standardization:", new_sd)
+    sd = math.sqrt(var_sum / rows)
+
+    print(f"Feature {j}: Mean = {mean:.5f}, SD = {sd:.5f}")
