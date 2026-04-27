@@ -20,11 +20,5 @@ pipeline = Pipeline([
     ('logreg', LogisticRegression(max_iter=1000))
 ])
 
-kfold = KFold(n_splits=10, shuffle=True, random_state=42)
 
-scores = cross_val_score(pipeline, X, y, cv=kfold, scoring='accuracy')
 
-print("Without  Normalization")
-print("Mean Accuracy:", scores.mean())
-print("Std Dev:", scores.std())
-print("Fold Accuracies:", scores)
